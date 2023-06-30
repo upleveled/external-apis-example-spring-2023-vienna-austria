@@ -1,0 +1,28 @@
+name: Linting and type checking
+on: push
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    env:
+      STRIPE_SECRET_KEY: xxxxxxxxxxxxxxxxx
+      TABLET_ID: xxxxxxxxxxxxxxxxx
+      MAGAZINE_ID: xxxxxxxxxxxxxxxxx
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: '8'
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run TypeScript Compiler
+        run: pnpm tsc
+      - name: Run ESLint
+        run: pnpm eslint . --max-warnings 0
+      - name: Run linter
+        run: pnpm lint

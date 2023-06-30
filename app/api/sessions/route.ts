@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 import { stripeClient } from '../../../utils/stripe';
 
-export async function POST(request: NextRequest) {
+type StripeResponseBody = {
+  sessions: Stripe.Checkout.Session;
+};
+
+export async function POST(
+  request: NextRequest,
+): Promise<NextResponse<StripeResponseBody>> {
   const body = await request.json();
 
   const session = await stripeClient.checkout.sessions.create({
